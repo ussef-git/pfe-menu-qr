@@ -12,7 +12,7 @@ const mongoose = require('mongoose');
  
      const newAdmin = new Admin({
        email: "admin@example.com",
-       motdepasse: hash,
+       password: hash,
        telephone:"123456789"
      });
  
