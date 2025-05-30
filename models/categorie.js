@@ -7,7 +7,11 @@ const categorySchema = new mongoose.Schema({
         required: true, // Nom obligatoire
         unique: true, // Évite les doublons de catégories
         trim: true // Supprime les espaces inutiles
-    }
+    },
+    articles:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Article' // Référence au modèle Article
+    }]
 }, { timestamps: true }); // Ajoute automatiquement createdAt et updatedAt
 
 // Création du modèle

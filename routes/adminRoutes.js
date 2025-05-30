@@ -8,12 +8,7 @@ const adminRoutes = express.Router();
 // Créer un nouvel administrateur avec validation et sécurisation
 adminRoutes.post(
   '/',
-  [
-    body('username').notEmpty().trim().withMessage('Le nom d\'utilisateur est requis.'),
-    body('email').isEmail().withMessage('Email invalide.'),
-    body('password').isLength({ min: 6 }).withMessage('Le mot de passe doit contenir au moins 6 caractères.'),
-    body('telephone').isNumeric().withMessage('Le téléphone doit être un nombre.')
-  ],
+ validateAdmin,
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

@@ -31,7 +31,7 @@ authRoutes.post("/login", login, async (req, res) => {
 // Route d'enregistrement d'un administrateur
 authRoutes.post("/register", async (req, res) => {
     try {
-        const { email, motdepasse } = req.body;
+        const { email, password } = req.body;
 
         // Vérifier si l'admin existe déjà
         const existingAdmin = await Admin.findOne({ email });
@@ -39,10 +39,10 @@ authRoutes.post("/register", async (req, res) => {
 
         // Hasher le mot de passe
         const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(motdepasse, salt);
+        const hashedPassword = await bcrypt.hash(password, salt);
 
         // Créer un nouvel administrateur
-        const newAdmin = new Admin({ email, motdepasse: hashedPassword });
+        const newAdmin = new Admin({ email, password: hashedPassword });
         await newAdmin.save();
 
         // Générer un token JWT
@@ -54,7 +54,7 @@ authRoutes.post("/register", async (req, res) => {
     }
 });
 
-authRoutes.get("/admin-protected-route", /*authMiddleware,*/ (req, res) => {
+authRoutes.get("/admin-protected-route", authMiddleware, (req, res) => {
     res.json({ message: "Accès autorisé, contenu sécurisé !" });
 });
   

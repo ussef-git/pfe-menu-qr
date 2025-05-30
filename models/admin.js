@@ -41,7 +41,13 @@ const adminSchema = new mongoose.Schema({
     verificationMethod: {
         type: String,
         enum: ["email", "sms"],
-        default: "email"
+       required:true,
+    },
+    otp:{
+        type:String,
+    },
+    otpExpires:{
+        type:Date,
     }
 });
 

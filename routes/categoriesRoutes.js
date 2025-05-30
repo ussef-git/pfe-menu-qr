@@ -3,7 +3,7 @@ const express = require('express'); //importer express
 const categoriesRoutes = express.Router(); //créer un routeur express
  
 
-categoriesRoutes.post('/', async (req, res) => {
+categoriesRoutes.post('/', authMiddleware,async (req, res) => {
     try {
         const { name } = req.body;
 
@@ -23,23 +23,19 @@ categoriesRoutes.post('/', async (req, res) => {
         res.status(500).json({ success: false, error: error.message });
     }
 });
-categoriesRoutes.get('/',async (req,res) =>{
-    const categories = await Categorie.find(); //chercher toutes les catégories dans la base de données
-       if(!categories){
-           res.status(500).json({success:false});
-   
-       }
-       res.status(200).send(categories);
-   });
-  categoriesRoutes.delete('/', async (req, res) => {
+categoriesRoutes.get('/', authMiddleware, async (req, res) => {
     try {
-        const { name } = req.body;
+        const categories = await Categorie.find();
+        res.status(200).json({ success: true, data: categories });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+  categoriesRoutes.delete('/:id', authMiddleware,async (req, res) => {
+    try {
+      
 
-        if (!name) {
-            return res.status(400).json({ success: false, message: "Veuillez fournir un nom de catégorie à supprimer." });
-        }
-
-        const deletedCategorie = await Categorie.findOneAndDelete({ name });
+        const deletedCategorie = await Categorie.findByIdAndDelete( req.params.id );
 
         if (!deletedCategorie) {
             return res.status(404).json({ success: false, message: "Catégorie non trouvée." });

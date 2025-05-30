@@ -3,7 +3,7 @@ const Article = require('../models/article');
 // Création d'un article
 const createArticle = async (req, res) => {
     try {
-        const { name, price, category } = req.body;
+        const { name, price, category,description} = req.body;
         const newArticle = new Article({ name, price, category,description });
 
         await newArticle.save();

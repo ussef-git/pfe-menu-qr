@@ -9,13 +9,18 @@ const articleRoutes = express.Router();
 //ajouter post avec id
 
 // Route POST pour créer un article
-articleRoutes.post('/', async (req, res) => {
+articleRoutes.post('/',authMiddleware, async (req, res) => {
     try {
         const { name, price, category,description } = req.body;
 
         // Vérifier que tous les champs sont fournis
         if (!name || !price || !category || !description) {
             return res.status(400).json({ success: false, message: "Veuillez entrer les champs." });
+        }
+          // Chercher la catégorie par son nom
+        const foundCategory = await Categorie.findOne({ name: category });
+        if (!foundCategory) {
+            return res.status(404).json({ success: false, message: "Catégorie non trouvée !" });
         }
 
         // Créer et enregistrer l'article
@@ -52,7 +57,7 @@ articleRoutes.get("/:id", async (req, res) => {
         res.status(500).json({ success: false, message: "Erreur serveur", error: error.message });
     }
 });
-articleRoutes.put("/:id", async (req, res) => {
+articleRoutes.put("/:id", authMiddleware,async (req, res) => {
     try {
         const { name, price, category,description } = req.body;
 
@@ -70,7 +75,7 @@ articleRoutes.put("/:id", async (req, res) => {
         res.status(500).json({ success: false, message: "Erreur serveur", error: error.message });
     }
 });
-articleRoutes.delete("/:id", async (req, res) => {
+articleRoutes.delete("/:id", authMiddleware,async (req, res) => {
     try {
         const deletedArticle = await Article.findByIdAndDelete(req.params.id);
         if (!deletedArticle) return res.status(404).json({ success: false, message: "Article introuvable !" });
