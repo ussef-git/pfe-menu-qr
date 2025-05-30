@@ -4,7 +4,7 @@ const Admin = require('../models/admin');
 const authMiddleware = require('../middlewares/authMiddleware');
 const { body, validationResult } = require('express-validator'); // Ajout de la validation
 const adminRoutes = express.Router();
-
+const { validateAdmin } = require('../middlewares/validation'); // Importer le middleware de validation
 // Créer un nouvel administrateur avec validation et sécurisation
 adminRoutes.post(
   '/',

@@ -2,7 +2,7 @@ const express = require('express');
 const { createArticle, createMultipleArticles}=require('../controllers/articleControllers'); 
 const Article = require('../models/article'); // Importer le modèle d'article//const { createCategory } = require("../controllers/categoryControllers");
 const articleRoutes = express.Router();
-
+const authMiddleware = require('../middlewares/authMiddleware'); // Importer le middleware d'authentification
 /*router.post('/articles',createArticle);*/
 //router.post('/articles/multiple',createMultipleArticles);
 

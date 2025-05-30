@@ -1,7 +1,7 @@
 const  Categorie= require('../models/categorie'); //importer le modèle de la base de données
 const express = require('express'); //importer express  
 const categoriesRoutes = express.Router(); //créer un routeur express
- 
+ const authMiddleware = require('../middlewares/authMiddleware'); // Importer le middleware d'authentification
 
 categoriesRoutes.post('/', authMiddleware,async (req, res) => {
     try {
