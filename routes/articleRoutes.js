@@ -9,7 +9,7 @@ const authMiddleware = require('../middlewares/authMiddleware'); // Importer le 
 //ajouter post avec id
 
 // Route POST pour créer un article
-articleRoutes.post('/',authMiddleware, async (req, res) => {
+articleRoutes.post('/',/*authMiddleware,*/ async (req, res) => {
     try {
         const { name, price, category,description } = req.body;
 
@@ -34,7 +34,7 @@ articleRoutes.post('/',authMiddleware, async (req, res) => {
     }
 });
 
-articleRoutes.get("/", async (req, res) => {
+articleRoutes.get("/",/*authMiddleware,*/ async (req, res) => {
     try {
         const articles = await Article.find();
         res.json({ success: true, data: articles });
@@ -46,7 +46,7 @@ articleRoutes.get("/", async (req, res) => {
 
 
 
-articleRoutes.get("/:id", async (req, res) => {
+articleRoutes.get("/:id",/*authMiddleware,*/ async (req, res) => {
     try {
         const article = await Article.findById(req.params.id);
         if (!article) return res.status(404).json({ success: false, message: "Article introuvable !" });
@@ -57,7 +57,7 @@ articleRoutes.get("/:id", async (req, res) => {
         res.status(500).json({ success: false, message: "Erreur serveur", error: error.message });
     }
 });
-articleRoutes.put("/:id", authMiddleware,async (req, res) => {
+articleRoutes.put("/:id", /*authMiddleware,*/async (req, res) => {
     try {
         const { name, price, category,description } = req.body;
 
@@ -75,7 +75,7 @@ articleRoutes.put("/:id", authMiddleware,async (req, res) => {
         res.status(500).json({ success: false, message: "Erreur serveur", error: error.message });
     }
 });
-articleRoutes.delete("/:id", authMiddleware,async (req, res) => {
+articleRoutes.delete("/:id",/* authMiddleware,*/async (req, res) => {
     try {
         const deletedArticle = await Article.findByIdAndDelete(req.params.id);
         if (!deletedArticle) return res.status(404).json({ success: false, message: "Article introuvable !" });

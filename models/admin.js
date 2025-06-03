@@ -21,7 +21,7 @@ const adminSchema = new mongoose.Schema({
         minlength: 6
     },
     telephone: { 
-        type: Number,
+        type: String,
         required: true,
         unique: true,
     },
@@ -68,8 +68,8 @@ adminSchema.pre('save', async function(next) {
 });
 
 // Méthode pour comparer les mots de passe
-adminSchema.methods.comparePassword = async function(candidatePassword) {
-    return await bcrypt.compare(candidatePassword, this.password);
+adminSchema.methods.comparePassword = async function(password) {
+    return await bcrypt.compare(password, this.password);
 };
 
 const Admin = mongoose.model('Admin', adminSchema);

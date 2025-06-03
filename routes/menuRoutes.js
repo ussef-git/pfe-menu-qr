@@ -22,7 +22,7 @@ function verifyJWT(req, res, next) {
 }
 
 // Route POST pour créer un menu (protégée)
-menuRoutes.post('/', verifyJWT, async (req, res) => {
+menuRoutes.post('/',/* verifyJWT,*/ async (req, res) => {
     try {
         const { name, categories } = req.body;
 
@@ -41,7 +41,7 @@ menuRoutes.post('/', verifyJWT, async (req, res) => {
 });
 
 // Route GET pour récupérer tous les menus (protégée)
-menuRoutes.get("/", verifyJWT, async (req, res) => {
+menuRoutes.get("/", /*verifyJWT,*/ async (req, res) => {
     try {
         // On "populate" pour avoir les infos des catégories
         const menus = await Menu.find().populate('categories');
@@ -53,7 +53,7 @@ menuRoutes.get("/", verifyJWT, async (req, res) => {
 });
 
 // Route DELETE pour supprimer une catégorie d'un menu (protégée)
-menuRoutes.delete("/", verifyJWT, async (req, res) => {
+menuRoutes.delete("/", /*verifyJWT,*/ async (req, res) => {
     try {
         const { menuId, categorieId } = req.body;
 

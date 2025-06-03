@@ -1,9 +1,9 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db'); // Connexion à la base de données
-const http = require('http');
-require('dotenv').config();// Charger les variables d’environnement
 
+require('dotenv').config();// Charger les variables d’environnement
+const http = require('http');
 
 
 const app = require("./app");

@@ -11,7 +11,7 @@ const DataSchema = new mongoose.Schema({
 const DataModel = mongoose.model("Data", DataSchema);
 
 // Route GET pour récupérer les données de MongoDB
-dbRoutes.get("/", async (req, res) => {
+dbRoutes.get("/",/*authMiddleware,*/ async (req, res) => {
     try {
         const data = await DataModel.find();
 

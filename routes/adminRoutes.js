@@ -5,9 +5,11 @@ const authMiddleware = require('../middlewares/authMiddleware');
 const { body, validationResult } = require('express-validator'); // Ajout de la validation
 const adminRoutes = express.Router();
 const { validateAdmin } = require('../middlewares/validation'); // Importer le middleware de validation
+const { verify } = require('jsonwebtoken');
+const loginLimiter = require('../middlewares/loginLimiter'); // Importer le middleware de limitation de connexion
+const jwt=require('jsonwebtoken');
 // Créer un nouvel administrateur avec validation et sécurisation
-adminRoutes.post(
-  '/',
+adminRoutes.post('/',/*authMiddleware,*/
  validateAdmin,
   async (req, res) => {
     const errors = validationResult(req);
@@ -16,20 +18,20 @@ adminRoutes.post(
     }
 
     try {
-      const { username, email, password, telephone } = req.body;
+      const { username, email, password, telephone, verificationMethod } = req.body;
 
       // Vérifier si l'email ou le téléphone existe déjà
       const existingAdmin = await Admin.findOne({ email });
       if (existingAdmin) {
         return res.status(400).json({ message: "Un administrateur avec cet email existe déjà." });
       }
-
+      /*
       // Hacher le mot de passe avant de sauvegarder
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
-
+       */
       // Créer le nouvel admin
-      const newAdmin = new Admin({ username, email, password: hashedPassword, telephone });
+      const newAdmin = new Admin({ username, email, password, telephone, verificationMethod });
       await newAdmin.save();
 
       res.status(201).json({ message: "Administrateur ajouté avec succès." });
@@ -40,12 +42,34 @@ adminRoutes.post(
 );
 
 // Récupérer tous les administrateurs
-adminRoutes.get('/', async (req, res) => {
+adminRoutes.get('/',/*authMiddleware,*/ async (req, res) => {
   try {
     const admins = await Admin.find().select('-password'); // Ne pas renvoyer le mot de passe
     res.json(admins);
   } catch (error) {
     res.status(500).json({ message: "Erreur lors de la récupération des administrateurs.", error: error.message });
+  }
+});
+adminRoutes.post('/login', loginLimiter, async (req, res) => {
+  const { email, password } = req.body;
+  const secret = process.env.JWT_SECRET;
+
+  try {
+    const admin = await Admin.findOne({ email });
+    if (!admin) {
+      return res.status(400).json({ message: "Email incorrect" });
+    }
+
+    // Utilise la méthode de comparaison de ton modèle Admin
+    const isPasswordValid = await admin.comparePassword(password);
+    if (!isPasswordValid) {
+      return res.status(400).json({ message: "Mot de passe incorrect" });
+    }
+
+    const token = jwt.sign({ id: admin._id }, secret, { expiresIn: '1h' });
+    return res.status(200).json({ message: "Connexion réussie", token });
+  } catch (error) {
+    return res.status(500).json({ message: "Erreur serveur", error: error.message });
   }
 });
 

@@ -3,7 +3,7 @@ const express = require('express'); //importer express
 const categoriesRoutes = express.Router(); //créer un routeur express
  const authMiddleware = require('../middlewares/authMiddleware'); // Importer le middleware d'authentification
 
-categoriesRoutes.post('/', authMiddleware,async (req, res) => {
+categoriesRoutes.post('/', /*authMiddleware,*/async (req, res) => {
     try {
         const { name } = req.body;
 
@@ -23,7 +23,7 @@ categoriesRoutes.post('/', authMiddleware,async (req, res) => {
         res.status(500).json({ success: false, error: error.message });
     }
 });
-categoriesRoutes.get('/', authMiddleware, async (req, res) => {
+categoriesRoutes.get('/',/* authMiddleware,*/ async (req, res) => {
     try {
         const categories = await Categorie.find();
         res.status(200).json({ success: true, data: categories });
@@ -31,7 +31,7 @@ categoriesRoutes.get('/', authMiddleware, async (req, res) => {
         res.status(500).json({ success: false, error: error.message });
     }
 });
-  categoriesRoutes.delete('/:id', authMiddleware,async (req, res) => {
+  categoriesRoutes.delete('/:id', /*authMiddleware,*/async (req, res) => {
     try {
       
 

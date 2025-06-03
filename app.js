@@ -10,11 +10,10 @@ const menuRoutes = require('./routes/menuRoutes'); // Importer les routes de men
 const helmet = require('helmet'); // Sécuriser les en-têtes HTTP
 const errorHandler = require("./middlewares/errorHandler");
 const loginLimiter = require("./middlewares/loginLimiter"); // Importer le middleware de limitation de connexion
-const loginLimiterRoutes = require("./routes/loginLimiterRoutes"); // Importer les routes de limitation de connexion
 const emailRoutes = require("./routes/sendEmailRoutes"); // Importer les routes d'email
 const smsRoutes = require("./routes/sendSMSRoutes"); // Importer les routes de SMS
  const cors= require('cors'); // Importer CORS
-
+const http = require('http');
 //Middlewares globbaux
 app.use(express.json());
 app.use(cors());
@@ -29,7 +28,6 @@ app.use("/api/qrcode", qrCodeRoutes);
 app.use("/api/categories", categoriesRoutes);// Importer les routes de catégories
 app.use('/api/admin', adminRoutes);
 app.use("/api/menu",menuRoutes);
-app.use("/api/login", loginLimiterRoutes); // Utiliser les routes de limitation de connexion
 app.use("/api/email", emailRoutes); // Utiliser les routes d'email
 app.use("/api/sms", smsRoutes); // Utiliser les routes de SMS
  
