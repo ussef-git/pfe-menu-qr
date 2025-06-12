@@ -1,6 +1,6 @@
 const mongoose = require('mongoose'); // Connexion à la base de données
 const Categorie = require('./categorie'); // Importer le modèle de catégorie
-const articleSchema = mongoose.Schema({
+const MenuItemSchema = mongoose.Schema({
     name: {
         type: String,
         required: true // Obligatoire
@@ -21,6 +21,6 @@ const articleSchema = mongoose.Schema({
     }
 });
 
-const Article = mongoose.model("Article", articleSchema);
+const MenuItem = mongoose.model("Article", MenuItemSchema);
 
-module.exports = Article; // Exporter le modèle
+module.exports = MenuItem; // Exporter le modèle

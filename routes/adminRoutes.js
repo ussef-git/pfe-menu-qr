@@ -9,7 +9,7 @@ const { verify } = require('jsonwebtoken');
 const loginLimiter = require('../middlewares/loginLimiter'); // Importer le middleware de limitation de connexion
 const jwt=require('jsonwebtoken');
 // Créer un nouvel administrateur avec validation et sécurisation
-adminRoutes.post('/',/*authMiddleware,*/
+adminRoutes.post('/',authMiddleware,
  validateAdmin,
   async (req, res) => {
     const errors = validationResult(req);
@@ -25,11 +25,7 @@ adminRoutes.post('/',/*authMiddleware,*/
       if (existingAdmin) {
         return res.status(400).json({ message: "Un administrateur avec cet email existe déjà." });
       }
-      /*
-      // Hacher le mot de passe avant de sauvegarder
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(password, salt);
-       */
+      
       // Créer le nouvel admin
       const newAdmin = new Admin({ username, email, password, telephone, verificationMethod });
       await newAdmin.save();

@@ -1,4 +1,4 @@
-const Article = require('../models/article');
+const Article = require('../models/menuItem');
 
 // Création d'un article
 const createArticle = async (req, res) => {

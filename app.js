@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const articleRoutes = require("./routes/articleRoutes");
+const menuItemRoutes = require("./routes/menuItemRoutes");
 const qrCodeRoutes = require("./routes/qrCodeRoutes");
 const authRoutes=require("./routes/authRoutes");
 const categoriesRoutes = require("./routes/categoriesRoutes"); // Importer les routes de catégories
@@ -22,7 +22,7 @@ app.use(helmet());
 
 // Routes
 app.use("/api/db", dbRoutes);
-app.use("/api/article",articleRoutes);
+app.use("/api/menuItem",menuItemRoutes);
 app.use("/api/auth",authRoutes);
 app.use("/api/qrcode", qrCodeRoutes);
 app.use("/api/categories", categoriesRoutes);// Importer les routes de catégories

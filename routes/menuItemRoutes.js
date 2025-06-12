@@ -1,7 +1,7 @@
 const express = require('express');
-const { createArticle, createMultipleArticles}=require('../controllers/articleControllers'); 
-const Article = require('../models/article'); // Importer le modèle d'article//const { createCategory } = require("../controllers/categoryControllers");
-const articleRoutes = express.Router();
+const { createArticle, createMultipleArticles}=require('../controllers/menuItemControllers'); 
+const Article = require('../models/menuItem'); // Importer le modèle d'article//const { createCategory } = require("../controllers/categoryControllers");
+const menuItemRoutes = express.Router();
 const authMiddleware = require('../middlewares/authMiddleware'); // Importer le middleware d'authentification
 /*router.post('/articles',createArticle);*/
 //router.post('/articles/multiple',createMultipleArticles);
@@ -9,7 +9,7 @@ const authMiddleware = require('../middlewares/authMiddleware'); // Importer le 
 //ajouter post avec id
 
 // Route POST pour créer un article
-articleRoutes.post('/',/*authMiddleware,*/ async (req, res) => {
+menuItemRoutes.post('/',/*authMiddleware,*/ async (req, res) => {
     try {
         const { name, price, category,description } = req.body;
 
@@ -34,7 +34,7 @@ articleRoutes.post('/',/*authMiddleware,*/ async (req, res) => {
     }
 });
 
-articleRoutes.get("/",/*authMiddleware,*/ async (req, res) => {
+menuItemRoutes.get("/",/*authMiddleware,*/ async (req, res) => {
     try {
         const articles = await Article.find();
         res.json({ success: true, data: articles });
@@ -46,7 +46,7 @@ articleRoutes.get("/",/*authMiddleware,*/ async (req, res) => {
 
 
 
-articleRoutes.get("/:id",/*authMiddleware,*/ async (req, res) => {
+menuItemRoutes.get("/:id",/*authMiddleware,*/ async (req, res) => {
     try {
         const article = await Article.findById(req.params.id);
         if (!article) return res.status(404).json({ success: false, message: "Article introuvable !" });
@@ -57,7 +57,7 @@ articleRoutes.get("/:id",/*authMiddleware,*/ async (req, res) => {
         res.status(500).json({ success: false, message: "Erreur serveur", error: error.message });
     }
 });
-articleRoutes.put("/:id", /*authMiddleware,*/async (req, res) => {
+menuItemRoutes.put("/:id", /*authMiddleware,*/async (req, res) => {
     try {
         const { name, price, category,description } = req.body;
 
@@ -75,7 +75,7 @@ articleRoutes.put("/:id", /*authMiddleware,*/async (req, res) => {
         res.status(500).json({ success: false, message: "Erreur serveur", error: error.message });
     }
 });
-articleRoutes.delete("/:id",/* authMiddleware,*/async (req, res) => {
+menuItemRoutes.delete("/:id",/* authMiddleware,*/async (req, res) => {
     try {
         const deletedArticle = await Article.findByIdAndDelete(req.params.id);
         if (!deletedArticle) return res.status(404).json({ success: false, message: "Article introuvable !" });
@@ -87,7 +87,7 @@ articleRoutes.delete("/:id",/* authMiddleware,*/async (req, res) => {
     }
 });
 
-module.exports=articleRoutes;
+module.exports=menuItemRoutes;
 
 
 
